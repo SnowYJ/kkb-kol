@@ -18,7 +18,6 @@
 ### 模型效果：
     1. Bert分类模型的accuracy, recall, precision均在85%以上。
     2. 相似度建模效果对比: top3, 5, 10, 20 accuracy (文章数量：10000，公众号数量：6101) (参考embedding.png)。
-   <img src='data/embedding.png'>
     3. 相似度计算速度对比：MIPS：0:06:49 LSH: 0:54:15
     4. 数据量增加建模效果越好（参考accuracy.png）。
     
