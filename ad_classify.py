@@ -2,7 +2,8 @@ import pymysql.cursors
 from keras.models import load_model
 from bert.extract_feature import BertVector
 import numpy as np
-from dbutils.pooled_db import PooledDB
+from DBUtils.PooledDB import PooledDB
+
 import logging
 
 
@@ -35,7 +36,7 @@ class ad_classify(object):
 
     def query(self):
         while True:
-            sql = f"SELECT a.third_id, b.content FROM kol_article a LEFT JOIN kol_content b on a.third_id = b.third_id LIMIT {self.step}"# where a.type_id is null
+            sql = f"SELECT a.third_id, b.content FROM kol_article a LEFT JOIN kol_content b on a.third_id = b.third_id where a.type_id is null LIMIT {self.step}"
 
             arr = []
             connection = self.pool.connection()
@@ -45,7 +46,10 @@ class ad_classify(object):
                 third_id, content = x
                 y = 0
                 if content:
-                    vec = self.bert_model.encode([content[len(str(content)) - 300:]])["encodes"][0]
+                    if len(str(content)) > 300:
+                        vec = self.bert_model.encode([content[-300:]])["encodes"][0]
+                    else:
+                        vec = self.bert_model.encode([content])["encodes"][0]
                     x_train = np.array([vec])
                     predicted = self.load_model.predict(x_train)
                     y = np.argmax(predicted[0])
@@ -53,7 +57,8 @@ class ad_classify(object):
             if arr:
                 yield arr
             else:
-                break
+                continue
+
 
     def update_type_id(self):
         sql = "update kol_article a set a.type_id = %s where a.third_id = %s"
@@ -71,9 +76,9 @@ class ad_classify(object):
 
 if __name__ == '__main__':
     ac = ad_classify(
-        db_host='192.168.2.157',
+        db_host='192.168.30.200',
         db_user='root',
-        db_password='8Df#gnoYrmvIhxA920',
+        db_password='qg1xzGZSZt',
         db_name='kol'
     )
     ac.update_type_id()
