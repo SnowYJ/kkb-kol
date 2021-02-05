@@ -2,13 +2,11 @@
     1. 公众号分类任务，判断其是否属于广告公众号（评判方法：如果公众号下的文章包含广告即为广告公众号）。
     2. 公众号相似度匹配任务（判断公众号两两之间的相似度）。
 
-<img src='data/kol-intergace.PNG'>
+<img src="experiment result/interface.PNG">
 
 ### 任务介绍：
     1. 公众号分类任务，判断其是否属于广告公众号。
     2. 公众号相似度匹配任务。
-
-<img src="experiment result/interface.PNG">
 
 ### 预训练模型
     Bert: 下载bert已训练好的模型文件 -- chinese_L-12_H-768_A-12
